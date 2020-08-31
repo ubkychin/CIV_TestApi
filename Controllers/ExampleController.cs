@@ -9,48 +9,50 @@ namespace TestApi.Controllers
     {
 
         static public List<Person> People = new List<Person>();
+        static public int StaticCountInstances = 0;
+        public int CountInstances = 0;
 
         public ExampleController() {
-            People.Add(new Person("Jason", "007", 700));
-            People.Add(new Person("James", "008", 77));
-            People.Add(new Person("Maxwell", "86", 60));
-            People.Add(new Person("Agent", "99", 50));
+            // People = new List<Person>();
+            // People.Add(new Person("Jason", "007", 700));
+            // People.Add(new Person("James", "008", 77));
+            // People.Add(new Person("Maxwell", "86", 60));
+            // People.Add(new Person("Agent", "99", 50));
+
+            StaticCountInstances++;
+            this.CountInstances++;
+        
         }
 
-        [HttpGet]
-        public string Get()
-        {
-            return "Hello";
+        [HttpGet("GetAll")]
+        public List<Person> GetAll() {
+            return People;
         }
 
-        [HttpGet("{message}/{name}")]
-        public string Get(string message, string name)
-        {
-            return message + " " + name;
+        [HttpGet("GetRequests")]
+        public int GetRequestAmount() {
+            return StaticCountInstances;
         }
 
-        [HttpGet("{name}")]
-        public string Get(string name)
-        {
-            return name;
-        }
-
-        [HttpPost]
-        public string Post([FromBody] Person p) {
+        [HttpGet("{id}")]
+        public Person GetPerson(string id) {
             Person found = null;
-            
-            foreach (var pp in People) {
-                if (p.Id == pp.Id) {
-                    found = pp;
+
+            foreach (Person p in People) {
+                if (p.Id == id) {
+                    found = p;
                     break;
                 }
             }
 
-            if(found != null) {
-                return found.Name + " " + found.Id;
-            } else {
-                return "Not found";
-            }
+            return found;
         }
+
+        [HttpPost]
+        public string AddPerson(Person newPerson) {
+            People.Add(newPerson);
+            return "Person Added";
+        }
+
     }
 }
