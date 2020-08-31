@@ -48,10 +48,30 @@ namespace TestApi.Controllers
             return found;
         }
 
-        [HttpPost]
-        public string AddPerson(Person newPerson) {
+        [HttpPost("Add")]
+        public string AddPerson([FromBody] Person newPerson) {
             People.Add(newPerson);
             return "Person Added";
+        }
+
+
+        /// <summary>
+        /// Return person in list with matching id
+        /// </summary>
+        /// <param name="findPerson"></param>
+        /// <returns></returns>
+        [HttpPost("Find")]
+        public Person FindPerson([FromBody] Person findPerson) {
+            Person found = null;
+
+            foreach (Person p in People) {
+                if (p.Id == findPerson.Id) {
+                    found = p;
+                    break;
+                }
+            }
+
+            return found;
         }
 
     }
