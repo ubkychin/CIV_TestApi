@@ -2,3 +2,4 @@ WASSUP??!!
 NewFeature branch here
 Feature complete ready to merge
 Conflict created from ConflictBranch
+Add more stuff to ConflictBranch
